@@ -6,12 +6,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SaltManager implements PasswordEncoder {
     @Override
     public @Nullable String encode(@Nullable CharSequence rawPassword) {
-    return null;
+    return rawPassword.toString()+Integer.toString(rawPassword.length())+rawPassword.charAt(0);
     }
 
     @Override
     public boolean matches(@Nullable CharSequence rawPassword, @Nullable String encodedPassword) {
-        return false;
+        return this.encode(rawPassword).hashCode()==encodedPassword.hashCode();
     }
 
 }
