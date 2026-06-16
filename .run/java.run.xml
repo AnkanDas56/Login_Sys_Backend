@@ -1,0 +1,11 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="java" type="Java Scratch" singleton="false" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="LoginSystem.java" />
+    <module name="MyLoginWeb" />
+    <option name="SCRATCH_FILE_URL" value="file://$PROJECT_DIR$/src/main/com/MyLoginWeb/main/com/MyLoginWeb/LoginSystem.java" />
+    <shortenClasspath name="NONE" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
