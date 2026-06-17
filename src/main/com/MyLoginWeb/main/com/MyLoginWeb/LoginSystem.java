@@ -51,7 +51,9 @@ class LoginSystem extends LinkedHashMap<String, String> {
         Person p2 = new Person("Johnny", "None", "Look at my UserName, You will understand by yourself");
         logSys.addUser(p1);
         logSys.addUser(p2);
-        System.out.println(Integer.toHexString(50));
+        SaltManager saltManager = new SaltManager();
+        saltManager.encode(p1.Password());
+        System.out.println(saltManager.matches(p1.Password(),saltManager.encode(p1.Password())));
     }
 }
 
