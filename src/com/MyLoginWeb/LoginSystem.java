@@ -50,7 +50,7 @@ class LoginSystem extends LinkedHashMap<String, String> {
         Person p2 = new Person("Johnny", "None", "Look at my UserName, You will understand by yourself");
         logSys.addUser(p1);
         logSys.addUser(p2);
-        System.out.println(Integer.toHexString(50));
+
     }
 }
 
@@ -59,8 +59,7 @@ class LogInSystemGUI extends LoginSystem implements ActionListener {
     Runnable r;
     JPanel p = new JPanel(new GridLayout(3, 1));
     //The ones above were Variable declarations and the declatations coming below are methods
-
-    JPasswordField PArea = new JPasswordField("Enter Your Password");
+    JTextArea PArea = new JTextArea("Enter Your Password");
     JTextArea UNArea = new JTextArea("Enter Your UserName");
 
     public void go() {
