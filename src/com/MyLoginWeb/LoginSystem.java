@@ -1,6 +1,4 @@
-package main.com.MyLoginWeb;
-
-
+package com.MyLoginWeb;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
