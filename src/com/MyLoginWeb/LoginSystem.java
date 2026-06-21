@@ -1,28 +1,31 @@
 package com.MyLoginWeb;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintStream;
-import java.util.LinkedHashMap;
-import java.util.Scanner;
+import java.util.*;
 
 // I would use Other collection frameWorks if it were a search System
-class LoginSystem extends LinkedHashMap<String, String> {
-    private LinkedHashMap<String, String> UserList = new LinkedHashMap<>();
+public class LoginSystem {
+    private HashMap<String, String> UserList = new LinkedHashMap<>();
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final SaltManager sm = new SaltManager();
     @Override
     public String toString() {
         String s = this.UserList.values().toString();
         return s;
     }
 
-    public void addUser(String UserName, String Password) {
-        this.UserList.put(Password, UserName);
+    public String addUser(String UserName, String Password) {
+        String put = this.UserList.put(this.sm.encode(Password), UserName);
+        return put;
     }
 
     public void addUser(Person user) {
-        this.UserList.put(user.Password(), user.UserName());
+        this.UserList.put(this.sm.encode(user.Password()), user.UserName());
     }
 
     public String searchUserName(String UserName) {
@@ -37,20 +40,26 @@ class LoginSystem extends LinkedHashMap<String, String> {
     }
 
     public boolean loginByPassword(String Password, String UserName) {
-        if (this.UserList.get(Password) != null && this.UserList.get(Password).hashCode() == UserName.hashCode())
-            return true; // the user could get in by typing in the Password
-        else return false;
+        return this.UserList.containsValue(UserName)&&this.UserList.containsKey(this.sm.encode(Password))&&this.UserList.get(this.sm.encode(Password))==UserName;
     }
 
-    static void main() {
-        LogInSystemGUI logSys = new LogInSystemGUI();
-        PrintStream os = new PrintStream(System.out);
+
+     void main() {
         Scanner sc = new Scanner(System.in);
         Person p1 = new Person("AnkanDas56", "AnkuBanku", "Hello, I am Ankan Das, a 12 y/o java developer aspiring a full stack developer seat in Facbook , Google, Amazon or ,Apple (most wanted co. is Apple)");
         Person p2 = new Person("Johnny", "None", "Look at my UserName, You will understand by yourself");
-        logSys.addUser(p1);
-        logSys.addUser(p2);
+        this.addUser(p1);
+        this.addUser(p2);
+        var Password = p1.Password();
+        System.out.println(this.encoder.encode("HellowWorld")+"\n"+this.encoder.encode(Password));
 
+    }
+    // getters for the encoders
+       BCryptPasswordEncoder getPasswordEncoder() {
+        return this.encoder;
+    }
+       SaltManager getSm() {
+        return sm;
     }
 }
 
