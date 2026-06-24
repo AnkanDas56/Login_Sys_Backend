@@ -1,18 +1,20 @@
 package com.MyLoginWeb;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.PrintStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 // I would use Other collection frameWorks if it were a search System
 public class LoginSystem {
-    private HashMap<String, String> UserList = new LinkedHashMap<>();
+    private final HashMap<String, String> UserList = new LinkedHashMap<>();
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     private final SaltManager sm = new SaltManager();
+
     @Override
     public String toString() {
         String s = this.UserList.values().toString();
@@ -20,12 +22,11 @@ public class LoginSystem {
     }
 
     public String addUser(String UserName, String Password) {
-        String put = this.UserList.put(this.sm.encode(Password), UserName);
-        return put;
+        return this.UserList.put(UserName, this.sm.encode(Password));
     }
 
     public void addUser(Person user) {
-        this.UserList.put(this.sm.encode(user.Password()), user.UserName());
+        this.UserList.put(user.UserName(), this.sm.encode(user.Password()));
     }
 
     public String searchUserName(String UserName) {
@@ -40,25 +41,25 @@ public class LoginSystem {
     }
 
     public boolean loginByPassword(String Password, String UserName) {
-        return this.UserList.containsValue(UserName)&&this.UserList.containsKey(this.sm.encode(Password))&&this.UserList.get(this.sm.encode(Password))==UserName;
+        return this.UserList.containsValue(UserName) && this.UserList.containsKey(this.sm.encode(Password)) && this.UserList.get(this.sm.encode(Password)) == UserName;
     }
 
 
-     void main() {
-        Scanner sc = new Scanner(System.in);
+    void main() {
         Person p1 = new Person("AnkanDas56", "AnkuBanku", "Hello, I am Ankan Das, a 12 y/o java developer aspiring a full stack developer seat in Facbook , Google, Amazon or ,Apple (most wanted co. is Apple)");
         Person p2 = new Person("Johnny", "None", "Look at my UserName, You will understand by yourself");
         this.addUser(p1);
         this.addUser(p2);
-        var Password = p1.Password();
-        System.out.println(this.encoder.encode("HellowWorld")+"\n"+this.encoder.encode(Password));
+        System.out.println(this.sm.matches(p1.Password(),this.UserList.get(p1.UserName())));
 
     }
+
     // getters for the encoders
-       BCryptPasswordEncoder getPasswordEncoder() {
+    BCryptPasswordEncoder getPasswordEncoder() {
         return this.encoder;
     }
-       SaltManager getSm() {
+
+    SaltManager getSm() {
         return sm;
     }
 }
@@ -76,12 +77,18 @@ class LogInSystemGUI extends LoginSystem implements ActionListener {
         f.setBackground(Color.black);
         LayoutManager mgr = new GridLayout(1, 200);
         this.UNArea.setLayout(mgr);
-        this.PArea.setLayout(mgr);this.PArea.setCursor(new Cursor(4));
-        this.UNArea.setEditable(true);this.UNArea.setBackground(Color.BLACK);this.UNArea.setForeground(Color.WHITE);
-        this.PArea.setEditable(true);this.PArea.setBackground(Color.black);this.PArea.setForeground(Color.WHITE);
+        this.PArea.setLayout(mgr);
+        this.PArea.setCursor(new Cursor(4));
+        this.UNArea.setEditable(true);
+        this.UNArea.setBackground(Color.BLACK);
+        this.UNArea.setForeground(Color.WHITE);
+        this.PArea.setEditable(true);
+        this.PArea.setBackground(Color.black);
+        this.PArea.setForeground(Color.WHITE);
         this.p.add(UNArea, "North");
         this.p.add(PArea, "South");
-        JButton b = new JButton("Login");b.setForeground(Color.green);
+        JButton b = new JButton("Login");
+        b.setForeground(Color.green);
         b.addActionListener(this);
         this.p.add(b);
         f.add(p);
@@ -89,8 +96,8 @@ class LogInSystemGUI extends LoginSystem implements ActionListener {
         f.setBackground(Color.black);
         f.setVisible(true);
         this.r = () -> this.UNArea.setText(Boolean.toString(this.loginByPassword(this.PArea.getText(), this.UNArea.getText())));
-        if(this.loginByPassword(this.PArea.getText(),this.UNArea.getText())){
-            this.UNArea.setText("Welcome "+UNArea.getText()+" to your account");
+        if (this.loginByPassword(this.PArea.getText(), this.UNArea.getText())) {
+            this.UNArea.setText("Welcome " + UNArea.getText() + " to your account");
             this.p.remove(b);
         }
     }
@@ -117,7 +124,7 @@ record Person(String UserName, String Password, String bio) implements Comparabl
         }
         String LastFour = this.Password.substring(this.Password.length() - 4);
         sb.append(LastFour);
-        String s = "UserName = " + this.UserName() + " and , Password = " + sb.toString();
+        String s = "UserName = " + this.UserName() + " and , Password = " + sb;
         return s + "\n" + this.bio();
     }
 

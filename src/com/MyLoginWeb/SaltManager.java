@@ -1,20 +1,23 @@
 package com.MyLoginWeb;
 
+import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import java.util.Objects;
+import org.springframework.util.StringUtils;
 
 class SaltManager implements PasswordEncoder {
-    StringBuilder sb = new StringBuilder();
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final StringBuilder stringBuilder = new StringBuilder();
+
     @Override
     public @Nullable String encode(@Nullable CharSequence rawPassword) {
-        sb.replace(0,rawPassword.length(),encoder.encode(rawPassword));
+
+        StringBuilder sb = new StringBuilder();
+        sb.replace(0, rawPassword.length(), this.encoder.encode(rawPassword));
         sb.append(rawPassword.hashCode());
         sb.append(rawPassword.toString().length());
-        sb.append(rawPassword.charAt((int) Math.random()*rawPassword.length()));
+        sb.append(rawPassword.charAt((int) (Math.random() * rawPassword.length())));
         sb.append(rawPassword.charAt(1));
         sb.append(rawPassword.charAt(rawPassword.length() - 1));
         return sb.toString();
@@ -22,7 +25,21 @@ class SaltManager implements PasswordEncoder {
 
     @Override
     public boolean matches(@Nullable CharSequence rawPassword, @Nullable String encodedPassword) {
-        return Objects.equals(this.encode(rawPassword), encodedPassword);
+        String s = this.removeExtraEncoding(encodedPassword, (String) rawPassword);
+        return this.encoder.matches(rawPassword,this.removeExtraEncoding(encodedPassword, (String) rawPassword));
+        //return this.encoder.matches(rawPassword,encodedPassword);
     }
+     private @NonNull String removeExtraEncoding(String encodedPassword, @Nullable String rawPassword){
+         StringBuilder sb = new StringBuilder();
+         sb.append(rawPassword.hashCode());
+         sb.append(rawPassword.toString().length());
+         sb.append(rawPassword.charAt((int) (Math.random() * rawPassword.length())));
+         sb.append(rawPassword.charAt(1));
+         sb.append(rawPassword.charAt(rawPassword.length() - 1));
+         StringBuilder sb2 = new StringBuilder();
+         sb2.append(encodedPassword);
+         sb2.delete(encodedPassword.length()-sb.toString().length(),encodedPassword.length());
+         return sb2.toString();
+     }
 
 }
