@@ -2,3 +2,4 @@
 .run
 target/MyLoginWeb-1.0.1.jar
 target/maven-archiver
+target/.
