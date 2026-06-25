@@ -1,2 +1,0 @@
-org.springframework.security.core.context.ReactiveSecurityContextHolderThreadLocalAccessor
-org.springframework.security.core.context.SecurityContextHolderThreadLocalAccessor

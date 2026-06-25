@@ -1,7 +1,5 @@
 package com.MyLoginWeb;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,8 +9,10 @@ import java.util.LinkedHashMap;
 
 // I would use Other collection frameWorks if it were a search System
 public class LoginSystem {
-    private final HashMap<String, String> UserList = new LinkedHashMap<>();
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    private final HashMap<String, String> UserList = new LinkedHashMap<>();// the Username will be the key as we need to find the corresponding encoded password to the userName
+    //We cant find the Keys from the values, so ,I made this.
+
+    // My custom hasher and salt manager.
     private final SaltManager sm = new SaltManager();
 
     @Override
@@ -41,7 +41,13 @@ public class LoginSystem {
     }
 
     public boolean loginByPassword(String Password, String UserName) {
-        return this.UserList.containsValue(UserName) && this.UserList.containsKey(this.sm.encode(Password)) && this.UserList.get(this.sm.encode(Password)) == UserName;
+        boolean b;
+        if (this.UserList.get(UserName) != null) {
+            b = this.getSm().matches(Password, this.UserList.get(UserName));
+            return b;
+        } else if (this.UserList.get(UserList) == null || this.getSm().matches(Password, this.UserList.get(UserName)))
+            return false;
+        return false;
     }
 
 
@@ -50,15 +56,11 @@ public class LoginSystem {
         Person p2 = new Person("Johnny", "None", "Look at my UserName, You will understand by yourself");
         this.addUser(p1);
         this.addUser(p2);
-        System.out.println(this.sm.matches(p1.Password(),this.UserList.get(p1.UserName())));
+        System.out.println(this.loginByPassword(p1.Password(), p1.UserName()));
 
     }
 
-    // getters for the encoders
-    BCryptPasswordEncoder getPasswordEncoder() {
-        return this.encoder;
-    }
-
+    // getters for the encoder
     SaltManager getSm() {
         return sm;
     }

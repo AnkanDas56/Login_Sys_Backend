@@ -5,7 +5,7 @@
  ### 1. Dont contribute in this branch follow the rules for contributing given in the main branch contribute in the pull-and-develop branch.
  ### 2. Don't add files or,any other documents harmful to devices or any offending context or document or any illegal document or file.
  ### 3. Don't add documents that are either legally bound to do so or, are not allowed. If any document contributed by anyone offends the laws and acts or constitution of any country , the person shall be liable to the possible effects and, punishments.
- ### 4. If any copy of the documents and programs in this repository is found in any platform , legal action shall be taken on the supplier
+ ### 4. If any copy of the documents and programs in this repository is found in any platform , legal action shall be taken on the supplier and the platform owner and the team.
  ###
  ###
  ###

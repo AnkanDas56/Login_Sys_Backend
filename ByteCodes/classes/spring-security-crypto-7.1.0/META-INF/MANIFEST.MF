@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Created-By: 25.0.3 (Oracle Corporation)
-Implementation-Title: spring-security-crypto
-Implementation-Version: 7.1.0
-Automatic-Module-Name: spring.security.crypto
-
