@@ -36,8 +36,12 @@ public class LoginSystem {
         else return null;
     }
 
-    public String getUserList() {
-        return this.UserList.values().toString();
+    public String getUserListAsString() {
+
+        return this.UserList.keySet().toString();
+    }
+    public HashMap<?,?> getUserList(){
+        return this.UserList;
     }
 
     public boolean loginByPassword(String Password, String UserName) {
@@ -56,7 +60,7 @@ public class LoginSystem {
         Person p2 = new Person("Johnny", "None", "Look at my UserName, You will understand by yourself");
         this.addUser(p1);
         this.addUser(p2);
-        System.out.println(this.loginByPassword(p1.Password(), p1.UserName()));
+        System.out.println(this.getUserListAsString());
 
     }
 
