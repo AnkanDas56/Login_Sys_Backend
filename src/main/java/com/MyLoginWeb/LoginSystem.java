@@ -1,11 +1,20 @@
 package com.MyLoginWeb;
 
+import com.MyLoginWeb.controller.SiteController;
+import org.springframework.ui.ConcurrentModel;
+import org.springframework.ui.Model;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import org.thymeleaf.context.Context;
 
 // I would use Other collection frameWorks if it were a search System
 public class LoginSystem {
@@ -60,8 +69,26 @@ public class LoginSystem {
         Person p2 = new Person("Johnny", "None", "Look at my UserName, You will understand by yourself");
         this.addUser(p1);
         this.addUser(p2);
-        System.out.println(this.getUserListAsString());
+        ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
+        resolver.setPrefix("templates/");
+        resolver.setSuffix(".html");
+        resolver.setTemplateMode("HTML");
+        resolver.setCharacterEncoding("UTF-8");
 
+        TemplateEngine engine = new TemplateEngine();
+        engine.setTemplateResolver(resolver);
+
+        SiteController controller = new SiteController();
+        Model model = new ConcurrentModel();
+        Context thContext = new Context();
+        model.asMap().forEach(thContext::setVariable);
+        FileWriter writer;
+        try {
+            writer = new FileWriter("output.html");
+            engine.process(controller.welcomePage(model), thContext, writer);
+            writer.write(controller.getUserName(model));
+        } catch (IOException e) {
+        }
     }
 
     // getters for the encoder
